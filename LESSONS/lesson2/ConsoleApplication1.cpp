@@ -2,7 +2,6 @@
 // передача по значению
 
 #include <iostream>
-#include <cmath>
 #include <ostream>
 #include <string>
 using namespace std;
@@ -26,19 +25,12 @@ void TakeDamage(int hp, int damage)
 // int& hp означает:
 // hp - это ссылка на ориг переменную
 
-struct CharacterStats
+struct  CharacterStats
 {
     string name;
     int hp;
     int maxHp;
     int damage;
-};
-
-struct Enemy
-{
-    string name;
-    int hp;
-    int armor;
 };
 
 // передача по const-ссылке
@@ -73,20 +65,13 @@ void HealByPointer(int* hp, int amount, int maxHp)
     }
 }
 
-int CalculateDamage(int baseDamage, float critMultiplier, int armor)
+int CalculateDamage(int baseDamage, float multiplier, int armor)
 {
-    float damage = baseDamage * critMultiplier;
-    damage -= armor;
-    if (damage < 0)
-        damage = 0;
-    return static_cast<int>(round(damage));
-}
-
-void ApplyDamage(Enemy& enemy, int damage)
-{
-    enemy.hp -= damage;
-    if (enemy.hp < 0)
-        enemy.hp = 0;
+    float damage = baseDamage * multiplier;
+    float afterArmor = damage - armor;
+    if (afterArmor < 0)
+        afterArmor = 0;
+    return static_cast<int>(round(afterArmor));
 }
 
 int main()
@@ -104,13 +89,8 @@ int main()
     int baseDamage = 50;
     float multiplier = 2.5;
     int armor = 70;
-    cout << "damage (formula): " << CalculateDamage(baseDamage, multiplier, armor) << endl;
-
-    Enemy goblin{ "Goblin", 50, 5 };
-    int hit = CalculateDamage(20, 1.5f, goblin.armor);
-    ApplyDamage(goblin, hit);
-    cout << goblin.name << " HP: " << goblin.hp << endl;
-
+    cout << CalculateDamage(baseDamage, multiplier, armor);
+    
     // &playerHp - это адрес переменной
     // *hp  - это указатель на значение по этому адресу
     
